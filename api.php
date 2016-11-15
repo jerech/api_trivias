@@ -1,6 +1,6 @@
 <?php
     
-	error_reporting(1);
+	error_reporting(0);
 	require_once("Rest.inc.php");
 	
 	class API extends REST {
@@ -8,13 +8,13 @@
 		
 		
 
-		const DB_SERVER = "127.0.0.1";
+		const DB_SERVER = "localhost";
 		const DB_USER = "ubeed";
 		const DB_PASSWORD = "20ubeed16";
 		const DB = "triviaubeed";
 		
 		private $db = NULL;
-		private $url_server="http://";
+		private $url_server="http://93.188.166.57";
 	
 		public function __construct(){
 			parent::__construct();				// Init parent contructor
