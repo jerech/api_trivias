@@ -138,14 +138,14 @@
 
 			mysql_query("START TRANSACTION", $this->db);
 
-
-			$sql="insert into usuario(email, apellido, nombre, contrasenia, imagen)
+			$fecha=date("Y-m-d H:i:s");
+			$sql="insert into usuario(email, apellido, nombre, contrasenia, imagen, fecha_creacion)
 								values('$email', 
 									'$apellido', 
 									'$nombre', 
 									'$contrasenia_encriptado',
-									'$url_imagen'
-									)";
+									'$url_imagen',
+									'$fecha')";
 			$result=mysql_query($sql,$this->db);
 			if($result){
 			
