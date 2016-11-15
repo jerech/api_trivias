@@ -8,14 +8,13 @@
 		
 		
 
-		/*const DB_SERVER = "127.0.0.1";
+		const DB_SERVER = "127.0.0.1";
 		const DB_USER = "ubeed";
-		const DB_PASSWORD = "";
-		const DB = "triviaubeed";*/
+		const DB_PASSWORD = "20ubeed16";
+		const DB = "triviaubeed";
 		
 		private $db = NULL;
-		//private $url_server="http://190.188.1.235/testing/";
-		private $url_server="http://www.bsasflow.com/";
+		private $url_server="http://";
 	
 		public function __construct(){
 			parent::__construct();				// Init parent contructor
@@ -67,12 +66,8 @@
 				}
 				
 				$token_gcm = $this->_request['gcm_token'];		
-				$id_empleado = $this->_request['id_employed'];
-				$sql="select u.* from usuario as u
-								inner join empleado as e on e.usuario_id=u.id
-						where e.id=".$id_empleado;
-				$result=mysql_query($sql, $this->db);
-				$id_usuario=mysql_fetch_assoc($result)['id'];
+				$id_usuario = $this->_request['id'];
+			
 
 				$sql="UPDATE usuario SET token_gcm='$token_gcm' WHERE id=".$id_usuario;
 				mysql_query($sql,$this->db);
@@ -126,14 +121,8 @@
 			$email=$this->_request['email'];
 			$contrasenia = $this->_request['password'];
 			$contrasenia_encriptado = sha1($contrasenia);
-			$peso=$this->_request['weight'];
-			$url_imagen=$this->_request['url_image'];
-			$sector_id=$this->_request['id_sector'];
-			if(is_null($sector_id)||empty($sector_id)){
-				$sector_id=91;//sector producto de la empresa CPC
-			}
-			
-			$empresa_id=99;
+			$url_imagen=$this->_request['imagen'];
+
 
 			//Comprobamos si el usuario ya existe
 			$sql="select * from usuario where usuario='$email'";
@@ -150,7 +139,7 @@
 			mysql_query("START TRANSACTION", $this->db);
 
 
-			$sql="insert into usuario(usuario, apellido, nombre, contrasenia, tipo, url_imagen,activo)
+			$sql="insert into usuario(email, apellido, nombre, contrasenia, tipo, url_imagen,activo)
 								values('$email', 
 									'$apellido', 
 									'$nombre', 
@@ -160,19 +149,11 @@
 									true)";
 			$result=mysql_query($sql,$this->db);
 			if($result){
-				$id_usuario=mysql_insert_id();
-				$sql="insert into empleado(sector_id, sector_empresa_id, usuario_id, peso, nivel_actividad_id)
-							values($sector_id, $empresa_id, $id_usuario, $peso, 1)";
-				$result2=mysql_query($sql,$this->db);
-				if($result2){
-					mysql_query("COMMIT", $this->db);
-					$response = array('success' => 'true', 'msg' => 'Usuario creado correctamente.');
-					$this->response(json_encode($response), 200);
-				}else{
-					mysql_query("ROLLBACK", $this->db);
-					$response = array('success' => 'false', 'msg' => 'Error al crear empleado.');
-					$this->response(json_encode($response), 200);
-				}
+			
+				mysql_query("COMMIT", $this->db);
+				$response = array('success' => 'true', 'msg' => 'Usuario creado correctamente.');
+				$this->response(json_encode($response), 200);
+		
 			}else{
 				mysql_query("ROLLBACK", $this->db);
 				$response = array('success' => 'false', 'msg' => 'Error al crear usuario.');
@@ -345,19 +326,11 @@
         					'nombre' => $row['nombre'],
         					'apellido' => $row['apellido'],
         					'email' => $row['email'],
+        					'imagen' => $row['imagen'],
         					'usuario_facebook' => $row['usuario_facebook']);
 
 
-        	$dirImg="";
-	    	/*foreach(glob("../admin/resources/js/scripts/custom/imgEmpresa/".$row3['id'].'/*.*') as $file) {
-			   $dirImg=$this->url_server."admin/resources/js/scripts/custom/imgEmpresa/";
-	    		$dirImg.=$row3['id']."/";
-			   $arr=split("/", $file);
-			   $dirImg.=$arr[count($arr)-1];
-			   break;
-			}*/
-
-            $response = array('success' => 'true', 'usuario'=>$datos,'preferencias'=>"", 'msg' => 'Login correcto');
+            $response = array('success' => 'true', 'usuario'=>$datos, 'msg' => 'Login correcto');
 			$this->response(json_encode($response), 200);
         } else {
             $response = array('success' => 'false', 'msg' => 'Usuario o contrasenia incorrecto.');
@@ -466,7 +439,7 @@
 
 
 			// direcciones de los archivos de las imagenes
-			$target_dir_uploads = "imagenes_cpc/";
+			$target_dir_uploads = "imagenes_ubeed/";
 
 			//$this->url_server="http://190.188.1.235/testing/";
 
