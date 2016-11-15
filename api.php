@@ -14,7 +14,7 @@
 		const DB = "triviaubeed";
 		
 		private $db = NULL;
-		private $url_server="http://93.188.166.57";
+		private $url_server="http://93.188.166.57/";
 	
 		public function __construct(){
 			parent::__construct();				// Init parent contructor
@@ -337,6 +337,63 @@
         }
     }
 
+
+    	public function loginFacebook() {
+
+        $email = $this->_request['email'];
+        $nombre = $this->_request['nombre'];
+        $apellido = $this->_request['apellido'];	
+        $usuario_facebook =  $this->_request['usuario_facebook'];
+         $token =  $this->_request['token'];
+        
+        $contrasenia = sha1($contrasenia);
+
+     
+    	$sql = "
+        SELECT 
+                *
+        FROM 
+                usuario AS u 
+        WHERE 
+                u.email = '$email'";
+        
+
+        $result=mysql_query($sql,$this->db);
+        if ($result) {
+
+        	$count=mysql_num_rows($result);
+        	if($count==0){
+        		$fecha=date("Y-m-d H:i:s");
+	        	$url_imagen="";
+				$sql="insert into usuario(email, apellido, nombre, contrasenia, imagen, fecha_creacion)
+									values('$email', 
+										'$apellido', 
+										'$nombre', 
+										'$token',
+										'$url_imagen',
+										'$fecha')";
+				$result=mysql_query($sql,$this->db);
+				if($result){
+					$response = array('success' => 'true', 'msg' => 'Login correcto');
+						$this->response(json_encode($response), 200);
+				}else{
+	            	$response = array('success' => 'false', 'msg' => 'Usuario incorrecto.');
+					$this->response(json_encode($response), 200);
+	        	}
+        	}
+
+        	$row = mysql_fetch_assoc($result);
+
+            $response = array('success' => 'true', 'msg' => 'Login correcto');
+			$this->response(json_encode($response), 200);
+        } else {
+					$response = array('success' => 'false', 'msg' => 'Usuario incorrecto.');
+					$this->response(json_encode($response), 200);
+        	
+        }
+    }
+
+
     public function verificate_answer(){
     		$idEmpleado=$this->_request['empleado_id'];
     		$idOptionQuestion=$this->_request['option_question_id'];
@@ -454,7 +511,7 @@
     			if(move_uploaded_file($_FILES['image']['tmp_name'],"../".$direccion_image_usuario)){
 
 		 	   		$direccion = $this->url_server.$direccion_image_usuario;
-		            $sql="update usuario set url_imagen='".$direccion."' where usuario='$email'";
+		            $sql="update usuario set imagen='".$direccion."' where usuario='$email'";
 		            $result=mysql_query($sql,$this->db);
 		            if($result){
 		            	$response = array('success' => 'true', 'url'=>$direccion,'msg' => 'Imagen guardada correctamente');
