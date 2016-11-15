@@ -1,6 +1,6 @@
 <?php
     
-	error_reporting(0);
+	error_reporting(1);
 	require_once("Rest.inc.php");
 	
 	class API extends REST {
@@ -125,7 +125,7 @@
 
 
 			//Comprobamos si el usuario ya existe
-			$sql="select * from usuario where usuario='$email'";
+			$sql="select * from usuario where email='$email'";
 			$result=mysql_query($sql,$this->db);
 			if($result){
 				$count=mysql_num_rows($result);
@@ -139,14 +139,13 @@
 			mysql_query("START TRANSACTION", $this->db);
 
 
-			$sql="insert into usuario(email, apellido, nombre, contrasenia, tipo, url_imagen,activo)
+			$sql="insert into usuario(email, apellido, nombre, contrasenia, imagen)
 								values('$email', 
 									'$apellido', 
 									'$nombre', 
 									'$contrasenia_encriptado',
-									'empleado',
-									'$url_imagen',
-									true)";
+									'$url_imagen'
+									)";
 			$result=mysql_query($sql,$this->db);
 			if($result){
 			
