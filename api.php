@@ -365,10 +365,11 @@
         	if($count==0){
         		$fecha=date("Y-m-d H:i:s");
 	        	$url_imagen="";
-				$sql="insert into usuario(email, apellido, nombre, contrasenia, imagen, fecha_creacion)
+				$sql="insert into usuario(email, apellido, nombre, usuario_facebook, contrasenia, imagen, fecha_creacion)
 									values('$email', 
 										'$apellido', 
 										'$nombre', 
+										'$usuario_facebook',
 										'$token',
 										'$url_imagen',
 										'$fecha')";
