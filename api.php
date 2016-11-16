@@ -66,10 +66,10 @@
 				}
 				
 				$token_gcm = $this->_request['gcm_token'];		
-				$id_usuario = $this->_request['id'];
+				$email = $this->_request['email'];
 			
 
-				$sql="UPDATE usuario SET token_gcm='$token_gcm' WHERE id=".$id_usuario;
+				$sql="UPDATE usuario SET token_gcm='$token_gcm' WHERE email='".$email."'";
 				mysql_query($sql,$this->db);
 					
 				$response = array('success' => 'true', 'msg' => 'Se guardo token gcm correctamente.');
