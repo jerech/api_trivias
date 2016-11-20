@@ -232,7 +232,7 @@
 					$row=mysql_fetch_assoc($result);
 					$id_user=$row['id'];
 					$voucher =$row['voucher'];
-					$puntos = $row['puntos']; 
+					$puntos = $row['puntos_acumulados']; 
 				}else{
 					$response = array('success' => 'false', 'msg' => 'Error. El usuario no existe.');
 					$this->response(json_encode($response), 200);
