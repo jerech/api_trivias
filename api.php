@@ -324,7 +324,7 @@
 					$response = array('success' => 'true', 'msg' => 'Datos obtenidos correctamente',
 										'puntos'=> $puntos, 'voucher'=>$voucher,
 										'partidas_iniciadas'=>$array_partidas_iniciadas,
-										'paratidas_terminadas'=>$array_partidas_terminadas);
+										'partidas_terminadas'=>$array_partidas_terminadas);
 					$this->response(json_encode($response), 200);
 
 				}
