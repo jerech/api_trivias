@@ -219,7 +219,7 @@
 
 		public function config_account(){
 			$name = $this->_request['nombre'];
-			$last_name = $this->_request['apellidos'];
+			$last_name = $this->_request['apellido'];
 			$email=$this->_request['email'];
 			$url_image=$this->_request['url_image'];
 			$notificaciones = $this->_request['notificaciones'];
@@ -253,7 +253,7 @@
 						notificaciones = $notificaciones,
 						sonidos = $sonidos ";
 	
-		     $sql.=" where usuario='$email'";
+		     $sql.=" where email='$email'";
 
 			$result=mysql_query($sql,$this->db);
 			if($result){
