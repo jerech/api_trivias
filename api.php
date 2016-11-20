@@ -628,10 +628,11 @@
 		  	if(isset($email) && isset($_FILES['image'])){
 
     			$direccion_image_usuario = $target_dir_uploads.$email.basename($_FILES["image"]["name"]);
+    			$direccion = $this->url_server.$direccion_image_usuario;
 
-    			if(move_uploaded_file($_FILES['image']['tmp_name'],"../".$direccion_image_usuario)){
+    			if(move_uploaded_file($_FILES['image']['tmp_name'],$direccion)){
 
-		 	   		$direccion = $this->url_server.$direccion_image_usuario;
+		 	   		
 		            $sql="update usuario set imagen='".$direccion."' where email='$email'";
 		            $result=mysql_query($sql,$this->db);
 		            if($result){
