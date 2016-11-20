@@ -218,21 +218,17 @@
 		}
 
 		public function config_account(){
-			$name = $this->_request['name'];
-			$last_name = $this->_request['last_name'];
+			$name = $this->_request['nombre'];
+			$last_name = $this->_request['apellidos'];
 			$email=$this->_request['email'];
-			$facebook_user=$this->_request['facebook_user'];
 			$url_image=$this->_request['url_image'];
+			$notificaciones = $this->_request['notificaciones'];
+			$sonidos = $this->_request['sonidos'];
 
-			$password=$this->_request['password'];
-			if(!empty($password)){
-				$password=sha1($password);
-			}
-
-			$id_user=0;
+		
 
 			//Comprobamos si el usuario existe
-			$sql="select * from usuario where usuario='$email'";
+			$sql="select * from usuario where email='$email'";
 			$result=mysql_query($sql,$this->db);
 			if($result){
 				$count=mysql_num_rows($result);
@@ -253,11 +249,10 @@
 			$sql="update usuario set
 						apellido='$last_name',
 						nombre='$name',
-						url_imagen='$url_image' ";
-			if(!empty($password)){
-				$sql.=",contrasenia='$password'";
-			}
-
+						imagen='$url_image',
+						notificaciones = $notificaciones,
+						sonidos = $sonidos ";
+	
 		     $sql.=" where usuario='$email'";
 
 			$result=mysql_query($sql,$this->db);
