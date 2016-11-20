@@ -265,6 +265,7 @@
 						$email_turno = $array['email_turno'];
 						$id1 = $array['id1'];
 						$id2 = $array['id2'];
+						$fecha_actualizacion = $array['fecha_actualizacion'];
 						$respuestas = 0;
 						$respuestas_oponente = 0;
 
@@ -285,7 +286,7 @@
 						$result3=mysql_query($sql,$this->db);
 						
 
-						if($id_user==$id1){
+						if($id_user!=$id1){
 							$respuestas = mysql_num_rows($result2);
 							$respuestas_oponente = mysql_num_rows($result3);
 							$nombre = $nombre1;
