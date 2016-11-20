@@ -265,6 +265,7 @@
 						$email_turno = $array['email_turno'];
 						$id1 = $array['id1'];
 						$id2 = $array['id2'];
+						$duelo_id = $array['id'];
 						$fecha_actualizacion = $array['fecha_actualizacion'];
 						$respuestas = 0;
 						$respuestas_oponente = 0;
@@ -304,7 +305,8 @@
 										'respuestas'=>$respuestas,
 										'respuestas_oponente'=>$respuestas_oponente,
 										'fecha_actualizacion'=>$fecha_actualizacion,
-										'email_turno'=>$email_turno);
+										'email_turno'=>$email_turno,
+										'duelo_id'=>$duelo_id);
 						if($terminado==1){
 							$array_partidas_terminadas[]=$datos;
 						}else{
