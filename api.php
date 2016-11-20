@@ -632,7 +632,7 @@
     			if(move_uploaded_file($_FILES['image']['tmp_name'],"../".$direccion_image_usuario)){
 
 		 	   		$direccion = $this->url_server.$direccion_image_usuario;
-		            $sql="update usuario set imagen='".$direccion."' where usuario='$email'";
+		            $sql="update usuario set imagen='".$direccion."' where email='$email'";
 		            $result=mysql_query($sql,$this->db);
 		            if($result){
 		            	$response = array('success' => 'true', 'url'=>$direccion,'msg' => 'Imagen guardada correctamente');
@@ -649,7 +649,7 @@
 
 		 	}else{
 				//Imagen no cargada
-				$response = array('success' => 'false', 'url'=>'','msg' => 'Imagen no cargada');
+				$response = array('success' => 'false', 'url'=>'','msg' => 'Datos vacios');
 								$this->response(json_encode($response), 200);
 			}
 	
