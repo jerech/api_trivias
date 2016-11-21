@@ -447,8 +447,8 @@
         					'email' => $row['email'],
         					'imagen' => $row['imagen'],
         					'usuario_facebook' => $row['usuario_facebook'],
-        					'notificaciones' => $row['notificaciones'],
-        					'sonidos' => $row['sonidos']);
+        					'notificaciones' => $row['notificaciones']==1?'true':'false',
+        					'sonidos' => $row['sonidos']==1?'true':'false');
 
 
             $response = array('success' => 'true', 'usuario'=>$datos, 'msg' => 'Login correcto');
@@ -532,8 +532,8 @@
         					'email' => $email,
         					'imagen' => $imagen,
         					'usuario_facebook' =>$usuario_facebook,
-        					'notificaciones' => $row['notificaciones'],
-        					'sonidos' => $row['sonidos']);
+        					'notificaciones' => $row['notificaciones']==1?'true':'false',
+        					'sonidos' => $row['sonidos']==1?'true':'false');
             $response = array('success' => 'true', 'usuario'=>$datos, 'msg' => 'Login correcto');
 			$this->response(json_encode($response), 200);
         } else {
