@@ -518,10 +518,17 @@
 	        	}
         	}
 
-        	
+        	$sql="update usuario set
+						apellido='$apellido',
+						nombre='$nombre',
+						imagen='$imagen'
+
+					where email='$email'";
+
+        	$result=mysql_query($sql,$this->db);
         	$datos = array('id' => $row['id'] ,
         					'nombre' => $nombre,
-        					'apellido' => $row['apellido'],
+        					'apellido' => $apellido,
         					'email' => $email,
         					'imagen' => $imagen,
         					'usuario_facebook' =>$usuario_facebook,
