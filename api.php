@@ -446,7 +446,9 @@
         					'apellido' => $row['apellido'],
         					'email' => $row['email'],
         					'imagen' => $row['imagen'],
-        					'usuario_facebook' => $row['usuario_facebook']);
+        					'usuario_facebook' => $row['usuario_facebook'],
+        					'notificaciones' => $row['notificaciones'],
+        					'sonidos' => $row['sonidos']);
 
 
             $response = array('success' => 'true', 'usuario'=>$datos, 'msg' => 'Login correcto');
@@ -465,6 +467,7 @@
         $apellido = $this->_request['apellido'];	
         $usuario_facebook =  $this->_request['usuario_facebook'];
          $token =  $this->_request['token'];
+         $imagen = $this->_request['imagen'];
         
         $contrasenia = sha1($contrasenia);
 
@@ -491,11 +494,22 @@
 										'$nombre', 
 										'$usuario_facebook',
 										'$token',
-										'$url_imagen',
+										'$imagen',
 										'$fecha')";
 				$result=mysql_query($sql,$this->db);
 				if($result){
-					$response = array('success' => 'true', 'msg' => 'Login correcto');
+
+					$datos = array('id' => mysql_insert_id(),
+        					'nombre' => $nombre,
+        					'apellido' => $row['apellido'],
+        					'email' => $email,
+        					'imagen' => $imagen,
+        					'usuario_facebook' =>$usuario_facebook,
+        					'notificaciones' => 'true',
+        					'sonidos' => 'true');
+
+
+					$response = array('success' => 'true', 'usuario'=>$datos, 'msg' => 'Login correcto');
 						$this->response(json_encode($response), 200);
 				}else{
 	            	$response = array('success' => 'false', 'msg' => 'Usuario incorrecto.');
@@ -504,11 +518,21 @@
         	}
 
         	$row = mysql_fetch_assoc($result);
-
-            $response = array('success' => 'true', 'msg' => 'Login correcto');
+        	$datos = array('id' => $row['id'] ,
+        					'nombre' => $row['nombre'],
+        					'apellido' => $row['apellido'],
+        					'email' => $row['email'],
+        					'imagen' => $row['imagen'],
+        					'usuario_facebook' => $row['usuario_facebook'],
+        					'notificaciones' => $row['notificaciones'],
+        					'sonidos' => $row['sonidos']);
+            $response = array('success' => 'true', 'usuario'=>$datos, 'msg' => 'Login correcto');
 			$this->response(json_encode($response), 200);
         } else {
-					$response = array('success' => 'false', 'msg' => 'Usuario incorrecto.');
+
+        	
+
+					$response = array('success' => 'false','msg' => 'Usuario incorrecto.');
 					$this->response(json_encode($response), 200);
         	
         }
