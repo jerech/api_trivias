@@ -520,11 +520,11 @@
 
         	
         	$datos = array('id' => $row['id'] ,
-        					'nombre' => $row['nombre'],
+        					'nombre' => $nombre,
         					'apellido' => $row['apellido'],
-        					'email' => $row['email'],
-        					'imagen' => $row['imagen'],
-        					'usuario_facebook' => $row['usuario_facebook'],
+        					'email' => $email,
+        					'imagen' => $imagen,
+        					'usuario_facebook' =>$usuario_facebook,
         					'notificaciones' => $row['notificaciones'],
         					'sonidos' => $row['sonidos']);
             $response = array('success' => 'true', 'usuario'=>$datos, 'msg' => 'Login correcto');
