@@ -482,6 +482,7 @@
         
 
         $result=mysql_query($sql,$this->db);
+        $row = mysql_fetch_assoc($result);
         if ($result) {
 
         	$count=mysql_num_rows($result);
@@ -517,7 +518,7 @@
 	        	}
         	}
 
-        	$row = mysql_fetch_assoc($result);
+        	
         	$datos = array('id' => $row['id'] ,
         					'nombre' => $row['nombre'],
         					'apellido' => $row['apellido'],
