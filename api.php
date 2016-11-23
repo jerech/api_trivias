@@ -379,8 +379,10 @@
 										0,
 										1)";
 				$result = mysql_query($sql,$this->db);
+				
 				if($result){
-					$response = array('success' => 'true', 'msg' => 'Duelo creado correctamente.');
+					$id_duelo = mysql_insert_id();
+					$response = array('success' => 'true', 'msg' => 'Duelo creado correctamente.', 'id_duelo'=>$id_duelo);
 					$this->response(json_encode($response), 200);
 				}else{
 					$response = array('success' => 'false', 'msg' => 'Error. No podimos encontrarte oponente.');
