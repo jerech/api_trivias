@@ -657,6 +657,9 @@
 		$idCategoria=$this->_request['id_categoria'];
 
 		//ahora obtenemos una pregunta al azar de la categoria
+		$sql="select * from categoria where id=$idCategoria";
+		$resultCat=mysql_query($sql,$this->db);
+		$categoria = mysql_fetch_array($result, MYSQL_ASSOC);
 
 
 		$sql="select * from trivia where categoria_id=$idCategoria and activa=1";
@@ -672,7 +675,8 @@
 			$datos[]  = array('id' => $array['id'], 
 	    						'nombre'=>$array['nombre'],
 	    						'puntos'=>$array['puntos'],
-	    						'opciones'=>$this->get_question_option($array['id']));
+	    						'opciones'=>$this->get_question_option($array['id']),
+	    						'categoria'=>$categoria);
 
 		}
 
