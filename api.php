@@ -342,6 +342,84 @@
 
 		}
 
+		public function crear_duelo(){
+
+			$email=$this->_request['email'];
+			//Comprobamos si el usuario existe
+			$sql="select * from usuario where email='$email'";
+			$result=mysql_query($sql,$this->db);
+			if($result){
+				$count=mysql_num_rows($result);
+				if($count>0){
+					$user=mysql_fetch_assoc($result);
+					$id_user=$user['id'];
+				}else{
+					$response = array('success' => 'false', 'msg' => 'Error. El usuario no existe.');
+					$this->response(json_encode($response), 200);
+				}
+
+				//Aca tenemos que seleccionar el oponente aleatoriamente
+				$id_user_seleccionado = $this->obtener_id_usuario_aleatorio();
+				
+				$fecha=date("Y-m-d H:i:s");
+				$sql="insert into duelo(
+										usuario1_id, 
+										usuario2_id,
+										fecha_creacion,
+										fecha_actualizacion,
+										usuario_id_turno,
+										terminado,
+										activo)
+								values(
+										$id_user,
+										$id_user_seleccionado,
+										'$fecha',
+										'$fecha',
+										$id_user,
+										0,
+										1)";
+				$result = mysql_query($sql,$this->db);
+				if($result){
+					$response = array('success' => 'true', 'msg' => 'Duelo creado correctamente.');
+					$this->response(json_encode($response), 200);
+				}else{
+					$response = array('success' => 'false', 'msg' => 'Error. No podimos encontrarte oponente.');
+					$this->response(json_encode($response), 200);
+				}
+
+
+
+			}
+
+		}
+
+		private function obtener_id_usuario_aleatorio($id_user){
+
+			$sql="select max(id) as max from usuario";
+			$result=mysql_query($sql,$this->db);
+			$id_user_seleccionado=0;
+
+			if($result){
+				$max = mysql_fetch_assoc($result)['max'];	
+				do{
+					$id_random = rand(1,$max);
+					if($id_random!=$id_user){
+						$sql="select * from usuario where id=$id_random";
+						$result = mysql_query($sql,$this->db);
+						if($result){
+							if(mysql_num_rows($result)>0){
+								$id_user_seleccionado = mysql_fetch_assoc($result)['id'];
+							}
+						}
+					}
+
+				}while ($id_user_seleccionado==0);
+
+			}
+
+			return $id_user_seleccionado;
+		}
+
 		public function config_account(){
 			$name = $this->_request['nombre'];
 			$last_name = $this->_request['apellido'];
