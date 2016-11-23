@@ -650,44 +650,20 @@
 
     }
 
-    public function get_trivias(){
-
-			$idSector=$this->_request['id_sector'];
-
-			$sql="select t.*, u.nombre as unidad_medida from 
-					trivia_detalle as td 
-					inner join trivia as t on t.id=td.trivia_id
-					left join unidad_medida as u on u.id=t.unidad_medida_id
-					where t.activa=true and td.sector_id=".$idSector;
-
-			$result=mysql_query($sql,$this->db);
-			
-			$datos = array();
-			while ($array = mysql_fetch_array($result, MYSQL_ASSOC)) {
-
-				$datos[]  = array('id' => $array['id'], 
-		    						'name'=>$array['nombre'],
-		    						'init_date'=>$array['fechaInicio'],
-		    						'measurement_unit' => $array['unidad_medida']);
-
-			}
-
-			$response = array('success' => 'true', 'msg' => 'Se obtuvieron trivias', 'trivias'=>$datos);
-			$this->response(json_encode($response), 200);
-      		
-        	
-	}
-
+ 
 
 	public function get_trivia(){
-		$idCategoria=$this->_request['categoria_id'];
-		$idUsuario=$this->_request['usuario_id'];
+		$email=$this->_request['email'];
+		$idCategoria=$this->_request['id_categoria'];
+
+		//ahora obtenemos una pregunta al azar de la categoria
+
 
 		$sql="select * from trivia where categoria_id=$idCategoria and activa=1";
 		$result=mysql_query($sql,$this->db);
 
 		$count = mysql_num_rows($result);
-		$index = rand(0, ($count-1));
+		$index = rand(1, ($count-1));
 
 			
 		$datos = array();
@@ -706,23 +682,7 @@
 
 	}
 
-	private function get_question_option($trivia_id){
-
-		$sql="select * from opcion_trivia
-				where trivia_id=".$trivia_id;
-		$result=mysql_query($sql,$this->db);
-			
-		$datos = array();
-		while ($array = mysql_fetch_array($result, MYSQL_ASSOC)) {
-			$datos[] = array('id' => $array['id'],
-							'name' => $array['descripcion'],
-							'correct'=> $array['correcta']);
-		}
-
-		return $datos;
-
-
-	}
+	
 
     public function upload_image(){
 
