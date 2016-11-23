@@ -670,9 +670,9 @@
 		while ($array = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
 			$datos[]  = array('id' => $array['id'], 
-	    						'name'=>$array['nombre'],
-	    						'points'=>$array['puntos'],
-	    						'options_question'=>$this->get_question_option($array['id']));
+	    						'nombre'=>$array['nombre'],
+	    						'puntos'=>$array['puntos'],
+	    						'opciones'=>$this->get_question_option($array['id']));
 
 		}
 
@@ -691,8 +691,8 @@
 		$datos = array();
 		while ($array = mysql_fetch_array($result, MYSQL_ASSOC)) {
 			$datos[] = array('id' => $array['id'],
-							'name' => $array['descripcion'],
-							'correct'=> $array['correcta']);
+							'descripcion' => $array['descripcion'],
+							'correcta'=> $array['correcta']);
 		}
 
 		return $datos;
