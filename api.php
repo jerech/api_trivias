@@ -650,7 +650,7 @@
 
     }
 
- 
+  
 
 	public function get_trivia(){
 		$email=$this->_request['email'];
@@ -682,7 +682,23 @@
 
 	}
 
-	
+	private function get_question_option($trivia_id){
+
+		$sql="select * from opcion_trivia
+				where trivia_id=".$trivia_id;
+		$result=mysql_query($sql,$this->db);
+			
+		$datos = array();
+		while ($array = mysql_fetch_array($result, MYSQL_ASSOC)) {
+			$datos[] = array('id' => $array['id'],
+							'name' => $array['descripcion'],
+							'correct'=> $array['correcta']);
+		}
+
+		return $datos;
+
+
+	}
 
     public function upload_image(){
 
