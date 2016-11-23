@@ -663,7 +663,7 @@
 		$result=mysql_query($sql,$this->db);
 
 		$count = mysql_num_rows($result);
-		$index = rand(1, ($count-1));
+		$index = rand(0, ($count-1));
 
 			
 		$datos = array();
