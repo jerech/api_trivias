@@ -288,13 +288,13 @@
 						
 
 						if($id_user!=$id1){
-							$respuestas = mysql_num_rows($result2);
-							$respuestas_oponente = mysql_num_rows($result3);
+							$respuestas = mysql_num_rows($result3);
+							$respuestas_oponente = mysql_num_rows($result2);
 							$nombre = $nombre1;
 							$imagen = $imagen1;
 						}else{
-							$respuestas = mysql_num_rows($result3);
-							$respuestas_oponente = mysql_num_rows($result2);
+							$respuestas = mysql_num_rows($result2);
+							$respuestas_oponente = mysql_num_rows($result3);
 							$nombre = $nombre2;
 							$imagen = $imagen2;
 						}
