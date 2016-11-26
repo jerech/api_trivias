@@ -628,22 +628,90 @@
 
 
     public function verificate_answer(){
-    		$idEmpleado=$this->_request['empleado_id'];
-    		$idOptionQuestion=$this->_request['option_question_id'];
-    		$points=$this->_request['points_question'];
+    		$email=$this->_request['email'];
+    		$idOption=$this->_request['id_opcion'];
+    		$idDuelo=$this->_request['id_duelo'];
+    		$idTrivia=$this->_request['id_trivia'];
 
-    		$sqlAnswer="insert into respuesta_trivia(opcion_pregunta_id, empleado_id) values(".$idOptionQuestion.", ".$idEmpleado.")";
-    		mysql_query($sqlAnswer,$this->db);
+    		$sql = "SELECT * FROM usuario AS u WHERE u.email = '$email'";
+        
 
-    		$sql="select * from opcion_pregunta where id=".$idOptionQuestion;
+        	$result=mysql_query($sql,$this->db);
+        	$row = mysql_fetch_assoc($result);
+        	$idUsuario=$row['id'];
+
+    		//$sqlAnswer="insert into respuesta_trivia(opcion_pregunta_id, usuario_id) values(".$idOptionQuestion.", ".$idEmpleado.")";
+    		//mysql_query($sqlAnswer,$this->db);
+
+
+    		$fecha=date("Y-m-d H:i:s");
+
+    		$sql="select * from opcion_trivia where id=".$idOption;
 
     		$result=mysql_query($sql,$this->db);
         	$row=mysql_fetch_assoc($result);
         	if($row['correcta']==true){
-        		$response = array('success' => 'true', 'msg' => 'Respuesta correcta!', 'points'=>$points, 'correct'=>'true');
+
+        		//Sumamos 1 punto al usuario si el duelo es 0
+        		if($idDuelo==0){
+        			$sql="update usuario set puntos_acumulados = (puntos_acumulados+1) where email='$email' ";
+        			mysql_query($sql,$this->db);
+        			$sql="insert into detalle_puntos(usuario_id, puntos, fecha_creacion, trivia_id, duelo_id)
+        					values($idUsuario, 1, '$fecha', $idTrivia, $idDuelo)";
+        			mysql_query($sql,$this->db);
+
+        		}else{
+
+        			$sql="select * from detalle_puntos where duelo_id=$idDuelo";
+        			$result=mysql_query($sql,$this->db);
+        			$numDetalles=mysql_num_rows($result);
+        			if($numDetalles==19){
+        				$sql="update usuario set puntos_acumulados = (puntos_acumulados+25) where email='$email' ";
+        				mysql_query($sql,$this->db);
+						$sql="insert into detalle_puntos(usuario_id, puntos, fecha_creacion, trivia_id, duelo_id)
+        					values($idUsuario, 25, '$fecha', $idTrivia, $idDuelo)";
+        				mysql_query($sql,$this->db);
+
+        				$sql="update duelo set fecha_actualizacion='$fecha', terminado=1, usuario_id_ganador=$idUsuario where id=$idDuelo";
+        				mysql_query($sql,$this->db);
+
+        			}else if($numDetalles<19){
+        				$sql="insert into detalle_puntos(usuario_id, puntos, fecha_creacion, trivia_id, duelo_id)
+        					values($idUsuario, 0, '$fecha', $idTrivia, $idDuelo)";
+        				mysql_query($sql,$this->db);
+        			}else{
+        				$response = array('success' => 'false', 'msg' => 'Duelo ya finalizado', 'respuesta'=>'false');
+						$this->response(json_encode($response), 200);
+        			}
+
+        			
+        		}
+
+
+        		
+        		
+
+        		$response = array('success' => 'true', 'msg' => 'Respuesta correcta!','respuesta'=>'true');
 				$this->response(json_encode($response), 200);
         	}else{
-        		$response = array('success' => 'true', 'msg' => 'Respuesta incorrecta!', 'points'=>0, 'correct'=>'false');
+
+        		if($idDuelo!=0){
+
+	        		//Si la respuesta es incorrecta, le pasamos el turno al otro usuario
+	        		$idUsuarioTurno=$idUsuario;
+	        		$sql="select * from duelo where id=$idDuelo";
+	        		$result=mysql_query($sql,$this->db);
+	        		$duelo=mysql_fetch_assoc($result);
+	        		if($idUsuario==$duelo['usuario2_id']){
+	        			$idUsuarioTurno=$duelo['usuario1_id'];
+	        		}else{
+	        			$idUsuarioTurno=$duelo['usuario2_id'];
+	        		}
+
+	        		$sql="update duelo set fecha_actualizacion='$fecha', usuario_id_turno=$idUsuarioTurno where id=$idDuelo";
+	        		mysql_query($sql,$this->db);
+        		}
+        		$response = array('success' => 'true', 'msg' => 'Respuesta incorrecta!', 'respuesta'=>'false');
 				$this->response(json_encode($response), 200);
         	}
 
