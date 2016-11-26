@@ -261,7 +261,7 @@
 						$nombre2 = $array['nombre2'];
 						$imagen1 = $array['imagen1'];
 						$imagen2 = $array['imagen2'];
-						$terminado = $array['terminado'];
+						$terminado = $array['terminado']==1?'true':'false';
 						$email_turno = $array['email_turno'];
 						$id1 = $array['id1'];
 						$id2 = $array['id2'];
