@@ -23,7 +23,7 @@ class GCMPushMessage {
 
 	var $url = 'https://fcm.googleapis.com/fcm/send';
 	var $serverApiKey = "";
-	var $devices = "";
+	var $devices  = array();
 	
 	/*
 		Constructor
@@ -39,12 +39,12 @@ class GCMPushMessage {
 	*/
 	function setDevices($deviceIds){
 	
-		/*if(is_array($deviceIds)){
+		if(is_array($deviceIds)){
 			$this->devices = $deviceIds;
 		} else {
 			$this->devices = array($deviceIds);
-		}*/
-		$devices = $deviceIds;
+		}
+		//$devices = $deviceIds;
 	
 	}
 
@@ -57,12 +57,11 @@ class GCMPushMessage {
 		
 
 	    $fields = array (
-	            'to' => $this->devices,
+	            'registration_ids' => $this->devices,
 	            'data' => array (
 	                    "data" => $message
 	            )
 	    );
-	    $fields = json_encode ( $fields );
 
 	    $headers = array (
 	            'Authorization: key=' . $this->serverApiKey,
@@ -70,13 +69,19 @@ class GCMPushMessage {
 	    );
 
 	    $ch = curl_init ();
-	    curl_setopt ( $ch, CURLOPT_URL, $url );
-	    curl_setopt ( $ch, CURLOPT_POST, true );
-	    curl_setopt ( $ch, CURLOPT_HTTPHEADER, $headers );
-	    curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, true );
-	    curl_setopt ( $ch, CURLOPT_POSTFIELDS, $fields );
+	    curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);   
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
 
-	    $result = curl_exec ( $ch );
+
+	    $result = curl_exec($ch);               
+        if ($result === FALSE) {
+            return 'Curl failed: '.curl_error($ch);
+        }
 	  
 	    curl_close ( $ch );
 
