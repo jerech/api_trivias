@@ -456,8 +456,10 @@
 		public function obtener_usuarios(){
 
 			$key=$this->_request['key'];
+			$email=$this->_request['email'];
 
-			$sql="select * from usuario where nombre like '%".$key."%' or apellido like '%".$key."%' or email like '%".$key."%'";		
+			$sql="select * from usuario where nombre like '%".$key."%' or 
+								apellido like '%".$key."%' or email like '%".$key."%'";		
 
 			$result=mysql_query($sql,$this->db);
 	
@@ -468,12 +470,15 @@
 				
 				while ($array = mysql_fetch_array($result, MYSQL_ASSOC)) {
 
-					$datos[]=array('nombre'=>$array['nombre'],
-						'apellido'=>$array['apellido'],
-						'email'=>$array['email'],
-						'puntos'=>$array['puntos_acumulados'],
-						'imagen'=>$array['imagen'],
-						'id'=>$array['id']);
+					if($email!=$array['email']){
+
+						$datos[]=array('nombre'=>$array['nombre'],
+							'apellido'=>$array['apellido'],
+							'email'=>$array['email'],
+							'puntos'=>$array['puntos_acumulados'],
+							'imagen'=>$array['imagen'],
+							'id'=>$array['id']);
+					}
 				}
 
 				$response = array('success' => 'true', 'msg' => '', 'usuarios'=>$datos);
