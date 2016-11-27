@@ -55,13 +55,14 @@
 
 		private function prueba(){
 
-			$sql="select * from usuario";
+			$sql="select * from usuario where id=1";
 	        		$result=mysql_query($sql,$this->db);
 	        		$gcm = new GCMPushMessage();
 		            //Fin declaracion
 
 		            $idsGcm = array();
 		            while ($array = mysql_fetch_array($result, MYSQL_ASSOC)) {
+
 		            	$idsGcm=$array['token_gcm'];       
 		       		
 		       		}
