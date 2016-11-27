@@ -370,6 +370,7 @@
 		public function crear_duelo(){
 
 			$email=$this->_request['email'];
+			$id_user_op=$this->_request['id_oponente']
 			//Comprobamos si el usuario existe
 			$sql="select * from usuario where email='$email'";
 			$result=mysql_query($sql,$this->db);
@@ -384,7 +385,12 @@
 				}
 
 				//Aca tenemos que seleccionar el oponente aleatoriamente
-				$id_user_seleccionado = $this->obtener_id_usuario_aleatorio();
+				if($id_oponente!=0){
+					$id_user_seleccionado = $id_oponente;
+				}else{
+					$id_user_seleccionado = $this->obtener_id_usuario_aleatorio();
+				}
+				
 				
 				$fecha=date("Y-m-d H:i:s");
 				$sql="insert into duelo(
@@ -466,7 +472,8 @@
 						'apellido'=>$array['apellido'],
 						'email'=>$array['email'],
 						'puntos'=>$array['puntos_acumulados'],
-						'imagen'=>$array['imagen']);
+						'imagen'=>$array['imagen'],
+						'id'=>$array['id']);
 				}
 
 				$response = array('success' => 'true', 'msg' => '', 'usuarios'=>$datos);
