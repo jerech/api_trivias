@@ -451,7 +451,7 @@
 
 			$key=$this->_request['key'];
 
-			$sql="select * from usuario where nombre ilike '%".$key."%' or apellido ilike '%".$key."%' or email ilike '%".$key."%'";		
+			$sql="select * from usuario where nombre like '%".$key."%' or apellido like '%".$key."%' or email like '%".$key."%'";		
 
 			$result=mysql_query($sql,$this->db);
 	
