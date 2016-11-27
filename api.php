@@ -370,7 +370,7 @@
 		public function crear_duelo(){
 
 			$email=$this->_request['email'];
-			$id_user_op=$this->_request['id_oponente']
+			$id_user_op=$this->_request['id_oponente'];
 			//Comprobamos si el usuario existe
 			$sql="select * from usuario where email='$email'";
 			$result=mysql_query($sql,$this->db);
