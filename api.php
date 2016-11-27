@@ -2,6 +2,7 @@
     
 	error_reporting(0);
 	require_once("Rest.inc.php");
+	require_once("GCMPushMessege.php");
 	
 	class API extends REST {
 	
@@ -639,6 +640,8 @@
         	$result=mysql_query($sql,$this->db);
         	$row = mysql_fetch_assoc($result);
         	$idUsuario=$row['id'];
+        	$nombreUsuario = $row['nombre'];
+        	$imagenUsuario=$row['imagen'];
 
     		//$sqlAnswer="insert into respuesta_trivia(opcion_pregunta_id, usuario_id) values(".$idOptionQuestion.", ".$idEmpleado.")";
     		//mysql_query($sqlAnswer,$this->db);
@@ -710,6 +713,29 @@
 
 	        		$sql="update duelo set fecha_actualizacion='$fecha', usuario_id_turno=$idUsuarioTurno where id=$idDuelo";
 	        		mysql_query($sql,$this->db);
+
+	        		//Enviamos la push al oponente
+	        		$sql="select * from usuario where id=$idUsuarioTurno";
+	        		$result=mysql_query($sql,$this->db);
+	        		$token=mysql_fetch_assoc($result)['token_gcm'];
+	        		$gcm = new GCMPushMessage();
+		            //Fin declaracion
+
+		            $idsGcm = array();
+		           
+		            while($array = mysql_fetch_array($result, MYSQL_ASSOC)){
+		                $token_gcm = $array['token_gcm'];
+		                $idsGcm[]=$token_gcm;       
+		            }
+		            $gcm->setDevices($idsGcm);
+	                $res = $gcm->send(substr('Mensaje', 0, 150), array(
+	                    'tipo'=>'turno',
+	                    'titulo' => 'Tu turno!',
+	                    'mensaje' => $nombreUsuario.' está esperando tu juego.',
+	                    'imagen' => $imagenUsuario,
+	                    'id_duelo' => (int)$idDuelo
+	                ));
+
         		}
         		$response = array('success' => 'true', 'msg' => 'Respuesta incorrecta!', 'respuesta'=>'false');
 				$this->response(json_encode($response), 200);
