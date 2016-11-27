@@ -54,7 +54,29 @@
 		}
 
 		private function prueba(){
-			$response = array('success' => 'false', "msg" => "Invalid Email address or Password");
+
+			$sql="select * from usuario";
+	        		$result=mysql_query($sql,$this->db);
+	        		$gcm = new GCMPushMessage();
+		            //Fin declaracion
+
+		            $idsGcm = array();
+		            while ($array = mysql_fetch_array($result, MYSQL_ASSOC)) {
+		            	$idsGcm[]=$array['token_gcm'];       
+		       		 }
+		          
+		            $gcm->setDevices($idsGcm);
+	                $res = $gcm->send(substr('Mensaje', 0, 150), array(
+	                    'tipo'=>'turno',
+	                    'titulo' => 'Tu turno!',
+	                    'mensaje' => ' está esperando tu juego.',
+	                    'imagen' => "",
+	                    'id_duelo' => 0
+	                ));
+
+
+
+			$response = array('success' => 'true', "msg" => "".json_encode($res));
 			$this->response(json_encode($response), 200);
 		}
 		
