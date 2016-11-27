@@ -469,7 +469,7 @@
 						'imagen'=>$array['imagen']);
 				}
 
-				$response = array('success' => 'true', 'msg' => 'Error. El usuario no existe.', 'usuarios'=>$datos);
+				$response = array('success' => 'true', 'msg' => '', 'usuarios'=>$datos);
 				$this->response(json_encode($response), 200);
 			}
 
