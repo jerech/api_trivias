@@ -447,6 +447,38 @@
 			return $id_user_seleccionado;
 		}
 
+		public function obtener_usuarios(){
+
+			$key=$this->_request['key'];
+
+			$sql="select * from usuario where nombre ilike '%".$key."%' or apellido ilike '%".$key."%' or email ilike '%".$key."%'";		
+
+			$result=mysql_query($sql,$this->db);
+	
+
+			if($result){
+
+				$datos = array();
+				
+				while ($array = mysql_fetch_array($result, MYSQL_ASSOC)) {
+
+					$datos[]=array('nombre'=>$array['nombre'],
+						'apellido'=>$array['apellido'],
+						'email'=>$array['email'],
+						'puntos'=>$array['puntos_acumulados'],
+						'imagen'=>$array['imagen']);
+				}
+
+				$response = array('success' => 'true', 'msg' => 'Error. El usuario no existe.', 'usuarios'=>$datos);
+				$this->response(json_encode($response), 200);
+			}
+
+			$response = array('success' => 'false', 'msg' => 'Error. El usuario no existe.');
+			$this->response(json_encode($response), 200);
+
+			
+		}
+
 		public function config_account(){
 			$name = $this->_request['nombre'];
 			$last_name = $this->_request['apellido'];
