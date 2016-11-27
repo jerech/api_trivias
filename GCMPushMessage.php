@@ -23,7 +23,7 @@ class GCMPushMessage {
 
 	var $url = 'https://fcm.googleapis.com/fcm/send';
 	var $serverApiKey = "";
-	var $devices = array();
+	var $devices = "";
 	
 	/*
 		Constructor
@@ -39,11 +39,12 @@ class GCMPushMessage {
 	*/
 	function setDevices($deviceIds){
 	
-		if(is_array($deviceIds)){
+		/*if(is_array($deviceIds)){
 			$this->devices = $deviceIds;
 		} else {
 			$this->devices = array($deviceIds);
-		}
+		}*/
+		$devices = $deviceIds;
 	
 	}
 
@@ -63,7 +64,7 @@ class GCMPushMessage {
 		}
 		
 		$fields = array(
-			'registration_ids'  => $this->devices,
+			'to'  => $this->devices,
 			'data'              => array( "message" => $message ),
 		);
 		

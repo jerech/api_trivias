@@ -60,11 +60,12 @@
 	        		$gcm = new GCMPushMessage();
 		            //Fin declaracion
 
-		            $idsGcm = array();
-		            while ($array = mysql_fetch_array($result, MYSQL_ASSOC)) {
-		            	$idsGcm[]=$array['token_gcm'];       
-		       		 }
-		          
+		           // $idsGcm = array();
+		            //while ($array = mysql_fetch_array($result, MYSQL_ASSOC)) {
+		            	//$idsGcm=$array['token_gcm'];       
+		       		
+		       		// }
+		          	$idsGcm=mysql_fetch_assoc($result)['token_gcm'];
 		            $gcm->setDevices($idsGcm);
 	                $res = $gcm->send(substr('Mensaje', 0, 150), array(
 	                    'tipo'=>'turno',
