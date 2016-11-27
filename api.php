@@ -2,7 +2,7 @@
     
 	error_reporting(0);
 	require_once("Rest.inc.php");
-	require_once("GCMPushMessege.php");
+	//require_once("GCMPushMessege.php");
 	
 	class API extends REST {
 	
@@ -723,10 +723,8 @@
 
 		            $idsGcm = array();
 		           
-		            while($array = mysql_fetch_array($result, MYSQL_ASSOC)){
-		                $token_gcm = $array['token_gcm'];
-		                $idsGcm[]=$token_gcm;       
-		            }
+		            $idsGcm[]=$token;       
+		          
 		            $gcm->setDevices($idsGcm);
 	                $res = $gcm->send(substr('Mensaje', 0, 150), array(
 	                    'tipo'=>'turno',
