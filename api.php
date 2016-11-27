@@ -67,7 +67,7 @@
 		       		// }
 		          	$idsGcm=mysql_fetch_assoc($result)['token_gcm'];
 		            $gcm->setDevices($idsGcm);
-	                $res = $gcm->send(substr('Mensaje', 0, 150), array(
+	                $res = $gcm->send(array(
 	                    'tipo'=>'turno',
 	                    'titulo' => 'Tu turno!',
 	                    'mensaje' => ' está esperando tu juego.',
@@ -77,7 +77,7 @@
 
 
 
-			$response = array('success' => 'true', "msg" => "".json_encode($res));
+			$response = array('success' => 'true', "msg" => $idsGcm." - ".json_encode($res));
 			$this->response(json_encode($response), 200);
 		}
 		

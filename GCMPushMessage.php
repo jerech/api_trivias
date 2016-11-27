@@ -53,60 +53,40 @@ class GCMPushMessage {
 		@param $message The message to send
 		@param $data Array of data to accompany the message
 	*/
-	function send($message, $data = false){
+	function send($message){
 		
-		if(!is_array($this->devices) || count($this->devices) == 0){
-			$this->error("No devices set");
-		}
-		
-		if(strlen($this->serverApiKey) < 8){
-			$this->error("Server API Key not set");
-		}
-		
-		$fields = array(
-			'to'  => $this->devices,
-			'data'              => array( "message" => $message ),
-		);
-		
-		if(is_array($data)){
-			foreach ($data as $key => $value) {
-				$fields['data'][$key] = $value;
-			}
-		}
 
-		$headers = array( 
-			'Authorization: key=' . $this->serverApiKey,
-			'Content-Type: application/json'
-		);
+	    $fields = array (
+	            'to' => $this->devices,
+	            'data' => array (
+	                    "data" => $message
+	            )
+	    );
+	    $fields = json_encode ( $fields );
 
-		// Open connection
-		$ch = curl_init();
+	    $headers = array (
+	            'Authorization: key=' . $this->serverApiKey,
+	            'Content-Type: application/json'
+	    );
+
+	    $ch = curl_init ();
+	    curl_setopt ( $ch, CURLOPT_URL, $url );
+	    curl_setopt ( $ch, CURLOPT_POST, true );
+	    curl_setopt ( $ch, CURLOPT_HTTPHEADER, $headers );
+	    curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, true );
+	    curl_setopt ( $ch, CURLOPT_POSTFIELDS, $fields );
+
+	    $result = curl_exec ( $ch );
+	  
+	    curl_close ( $ch );
+
+	    return $result;
 		
-		// Set the url, number of POST vars, POST data
-		curl_setopt( $ch, CURLOPT_URL, $this->url );
-		
-		curl_setopt( $ch, CURLOPT_POST, true );
-		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-		
-		curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode( $fields ) );
-		
-		// Avoids problem with https certificate
-		curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, false);
-		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false);
-		
-		// Execute post
-		$result = curl_exec($ch);
-		
-		// Close connection
-		curl_close($ch);
-		
-		return $result;
 	}
-	
+		
 	function error($msg){
-		echo "Android send notification failed with error:";
-		echo "\t" . $msg;
-		exit(1);
+			echo "Android send notification failed with error:";
+			echo "\t" . $msg;
+			exit(1);
 	}
 }
