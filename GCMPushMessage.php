@@ -30,7 +30,7 @@ class GCMPushMessage {
 		@param $apiKeyIn the server API key
 	*/
 	function GCMPushMessage(){
-		$this->serverApiKey = 'AIzaSyDtq8tN6uX51D7aYvHWsy_w5CdBIA71Bo8';
+		$this->serverApiKey = 'AIzaSyCwDijbG8Z3yO_Zj1phu-o0kG4_hE-HPv8';
 	}
 
 	/*
