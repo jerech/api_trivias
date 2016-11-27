@@ -2,7 +2,7 @@
     
 	error_reporting(0);
 	require_once("Rest.inc.php");
-	//require_once("GCMPushMessege.php");
+	require_once("GCMPushMessage.php");
 	
 	class API extends REST {
 	
