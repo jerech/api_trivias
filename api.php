@@ -733,6 +733,14 @@
 	                    'imagen' => $imagenUsuario,
 	                    'id_duelo' => (int)$idDuelo
 	                ));
+	                $file = "log_ws.txt";
+					$buffer="Resultado de notificacion:".json_encode($res);
+					 if (file_exists($file)) {
+		                        $buffer = file_get_contents($file)."\n".$buffer;
+		                }
+
+                	file_put_contents($file, $buffer);
+
 
         		}
         		$response = array('success' => 'true', 'msg' => 'Respuesta incorrecta!', 'respuesta'=>'false');
