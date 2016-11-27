@@ -750,20 +750,13 @@
 		            $idsGcm[]=$token;       
 		          
 		            $gcm->setDevices($idsGcm);
-	                $res = $gcm->send(substr('Mensaje', 0, 150), array(
+	                $res = $gcm->send(array(
 	                    'tipo'=>'turno',
 	                    'titulo' => 'Tu turno!',
-	                    'mensaje' => $nombreUsuario.' está esperando tu juego.',
-	                    'imagen' => $imagenUsuario,
-	                    'id_duelo' => (int)$idDuelo
+	                    'mensaje' => ' está esperando tu juego.',
+	                    'imagen' => "",
+	                    'id_duelo' => 0
 	                ));
-	                $file = "log_ws.txt";
-					$buffer="Resultado de notificacion:".json_encode($res);
-					 if (file_exists($file)) {
-		                        $buffer = file_get_contents($file)."\n".$buffer;
-		                }
-
-                	file_put_contents($file, $buffer);
 
 
         		}
