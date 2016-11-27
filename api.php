@@ -753,7 +753,7 @@
 	                $res = $gcm->send(array(
 	                    'tipo'=>'turno',
 	                    'titulo' => 'Tu turno!',
-	                    'mensaje' => $nombreUsuario' está esperando tu juego.',
+	                    'mensaje' => $nombreUsuario.' está esperando tu juego.',
 	                    'imagen' => $imagenUsuario,
 	                    'id_duelo' => $idDuelo
 	                ));
