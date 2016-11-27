@@ -59,7 +59,7 @@ class GCMPushMessage {
 	    $fields = array (
 	            'registration_ids' => $this->devices,
 	            'data' => $message
-	            )
+	            
 	    );
 
 	    $headers = array (
