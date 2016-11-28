@@ -367,6 +367,117 @@
 
 		}
 
+		public function get_datos_juego(){
+			$email = $this->_request['email'];
+			$idDuelo = $this->_request['id_duelo'];
+
+			$array_partidas_iniciadas = array();
+			$array_partidas_terminadas = array();
+
+			//Comprobamos si el usuario existe
+			$sql="select * from usuario where email='$email'";
+			$result=mysql_query($sql,$this->db);
+			if($result){
+				$count=mysql_num_rows($result);
+				if($count>0){
+					$row=mysql_fetch_assoc($result);
+					$id_user=$row['id'];
+					$voucher =$row['voucher'];
+					$puntos = $row['puntos_acumulados']; 
+					$nombre = $row['nombre']." ".$row['apellido'];
+					$imagen = $row['imagen'];
+				}else{
+					$response = array('success' => 'false', 'msg' => 'Error. El usuario no existe.');
+					$this->response(json_encode($response), 200);
+				}
+
+
+				$sql="select d.id, d.terminado, d.fecha_actualizacion, 
+				      d.fecha_creacion, u3.email as email_turno, 
+				      CONCAT(u1.nombre,' ',u1.apellido) as nombre1, 
+				      CONCAT(u2.nombre,' ',u2.apellido) as nombre2,
+				      u1.id as id1,
+				      u2.id as id2,
+				      u1.imagen as imagen1,
+				      u2.imagen as imagen2
+				    from duelo as d 
+				    left join usuario as u1 on u1.id=d.usuario1_id 
+				    left join usuario as u2 on u2.id=d.usuario2_id 
+				    left join usuario as u3 on u3.id=d.usuario_id_turno
+				    where d.activo=1 and d.id=$idDuelo
+				    order by fecha_actualizacion desc ";
+				$result=mysql_query($sql,$this->db);
+				if($result){
+					$array = mysql_fetch_assoc($result);
+						
+						$nombre1 = $array['nombre1'];
+						$nombre2 = $array['nombre2'];
+						$imagen1 = $array['imagen1'];
+						$imagen2 = $array['imagen2'];
+						$terminado = $array['terminado'];
+						$email_turno = $array['email_turno'];
+						$id1 = $array['id1'];
+						$id2 = $array['id2'];
+						$duelo_id = $array['id'];
+						$fecha_actualizacion = $array['fecha_actualizacion'];
+						$respuestas = 0;
+						$respuestas_oponente = 0;
+
+						$nombre = "";
+						$imagen = "";
+
+
+						$id_duelo = $array['id'];
+
+						//Verificamos la cantidad de preguntas respondidas correctamente para cada usuario
+						
+						$sql = "select id as cantidad from detalle_puntos 
+								where usuario_id=$id1 and duelo_id=$id_duelo";
+						$result2=mysql_query($sql,$this->db);
+						
+						$sql = "select id as cantidad from detalle_puntos 
+								where usuario_id=$id2 and duelo_id=$id_duelo";
+						$result3=mysql_query($sql,$this->db);
+						
+
+						if($id_user!=$id1){
+							$respuestas = mysql_num_rows($result3);
+							$respuestas_oponente = mysql_num_rows($result2);
+							$nombre_oponente = $nombre1;
+							$imagen_oponente = $imagen1;
+						}else{
+							$respuestas = mysql_num_rows($result2);
+							$respuestas_oponente = mysql_num_rows($result3);
+							$nombre_oponente = $nombre2;
+							$imagen_oponente = $imagen2;
+						}
+						
+				
+
+					//Agregamos los otros datos que faltan a la respuesta
+					$response = array('success' => 'true', 'msg' => 'Datos obtenidos correctamente',
+										'puntos'=> $puntos, 
+										'nombre'=>$nombre,
+										'imagen'=>$imagen,
+										'respuestas'=>$respuestas,
+										'nombre_oponente'=>$nombre_oponente,
+										'imagen_oponente'=>$imagen_oponente,
+										'respuestas_oponente'=>$respuestas_oponente);
+					$this->response(json_encode($response), 200);
+
+				}
+
+			}
+
+
+
+
+
+			$response = array('success' => 'false', 'msg' => 'Error. El usuario no existe.');
+					$this->response(json_encode($response), 200);
+
+		}
+
 		public function crear_duelo(){
 
 			$email=$this->_request['email'];
