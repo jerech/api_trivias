@@ -423,9 +423,6 @@
 						$respuestas = 0;
 						$respuestas_oponente = 0;
 
-						$nombre = "";
-						$imagen = "";
-
 
 						$id_duelo = $array['id'];
 
