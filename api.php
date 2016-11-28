@@ -453,7 +453,7 @@
 						$sql = "select id as cantidad from detalle_puntos 
 								where usuario_id=$id_user";
 						$result2=mysql_query($sql,$this->db);
-						$total_respuestas = mysql_num_rows($result);
+						$total_respuestas = mysql_num_rows($result2);
 						
 				
 
