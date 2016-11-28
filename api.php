@@ -448,6 +448,12 @@
 							$nombre_oponente = $nombre2;
 							$imagen_oponente = $imagen2;
 						}
+
+
+						$sql = "select id as cantidad from detalle_puntos 
+								where usuario_id=$id_user";
+						$result2=mysql_query($sql,$this->db);
+						$total_respuestas = mysql_num_rows($result);
 						
 				
 
@@ -457,6 +463,7 @@
 										'nombre'=>$nombre,
 										'imagen'=>$imagen,
 										'respuestas'=>$respuestas,
+										'total_respuestas'=>$total_respuestas,
 										'nombre_oponente'=>$nombre_oponente,
 										'imagen_oponente'=>$imagen_oponente,
 										'respuestas_oponente'=>$respuestas_oponente);
